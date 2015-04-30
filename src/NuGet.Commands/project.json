@@ -13,9 +13,10 @@
     "Microsoft.Framework.Logging.Interfaces": "1.0.0-beta5-*"
   },
 
-  "frameworks" : {
+  "frameworks": {
+    "net45": { },
     "dnx451": { },
-    "dnxcore50" : {
+    "dnxcore50": {
       "dependencies": {
       }
     }
