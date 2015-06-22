@@ -97,19 +97,30 @@ namespace NuGet.CommandLine
                             _log.LogVerbose($"Using packages directory: {packagesDir}");
 
                             var packageSources = sources.Values.Select(s => new PackageSource(s));
+                            var settings = Settings.LoadDefaultSettings(projectPath,
+                                configFileName: null,
+                                machineWideSettings: null);
                             if (!packageSources.Any())
                             {
-                                var settings = Settings.LoadDefaultSettings(projectPath,
-                                    configFileName: null,
-                                    machineWideSettings: null);
                                 var packageSourceProvider = new PackageSourceProvider(settings);
                                 packageSources = packageSourceProvider.LoadPackageSources();
                             }
 
                             var request = new RestoreRequest(
                                 project,
-                                packageSources,
-                                packagesDir);
+                                packageSources);
+
+                            if (packagesDirectory.HasValue())
+                            {
+                                request.PackagesDirectory = packagesDirectory.Value();
+                            }
+                            else
+                            {
+                                request.PackagesDirectory = SettingsUtility.GetGlobalPackagesFolder(settings);
+                            }
+
+                            // Resolve the packages directory
+                            _log.LogVerbose($"Using packages directory: {request.PackagesDirectory}");
 
                             if (supports.HasValue())
                             {
