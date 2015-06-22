@@ -14,7 +14,7 @@ namespace NuGet.Commands
         public static readonly int DefaultDegreeOfConcurrency = 8;
 
         public RestoreRequest(PackageSpec project, IEnumerable<PackageSource> sources)
-            : this(project, sources, null)
+            : this(project, sources, packagesDirectory: null)
         { }
 
         public RestoreRequest(PackageSpec project, IEnumerable<PackageSource> sources, string packagesDirectory)
