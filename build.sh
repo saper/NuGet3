@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+. nugetdownload.sh
+
 if test `uname` = Darwin; then
     cachedir=~/Library/Caches/KBuild
 else
@@ -9,12 +11,9 @@ else
         cachedir=$XDG_DATA_HOME;
     fi
 fi
-mkdir -p $cachedir
-
-url=https://www.nuget.org/nuget.exe
 
 if test ! -f $cachedir/nuget.exe; then
-    wget -O $cachedir/nuget.exe $url 2>/dev/null || curl -o $cachedir/nuget.exe --location $url /dev/null
+    nugetdownload $cachedir
 fi
 
 if test ! -e .nuget; then
@@ -28,7 +27,7 @@ if test ! -d packages/KoreBuild; then
 fi
 
 if ! type dnvm > /dev/null 2>&1; then
-    source packages/KoreBuild/build/dnvm.sh
+    . packages/KoreBuild/build/dnvm.sh
 fi
 
 if ! type k > /dev/null 2>&1; then
